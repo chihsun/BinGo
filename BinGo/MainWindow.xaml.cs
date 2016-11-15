@@ -229,6 +229,10 @@ namespace BINGO
             {
                 e.Handled = true;
             }
+            if (e.Key == Key.Enter)
+            {
+                BTN_OK_Click(sender, e);
+            }
         }
 
         private bool _initialized;
