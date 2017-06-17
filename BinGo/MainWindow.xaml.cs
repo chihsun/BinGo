@@ -26,16 +26,53 @@ namespace BINGO
             InitializeComponent();
         }
 
+        #region parameter 
+        List<Label> LB_Result = new List<Label>();
+        public int TotalCount = 0;
+        List<int> data = new List<int>();
+        Dictionary<int, List<int>> sortdata = new Dictionary<int, List<int>>();
+        List<int> Source = new List<int>();
+        int Result;
+        Random rand = new Random();
+        private bool _initialized;
+        #endregion
+        private void Window_Loaded(Object sender, RoutedEventArgs e)
+        {
+            LB_Result = new List<Label>() { LB_0, LB_1, LB_2, LB_3, LB_4, LB_5, LB_6, LB_7 };
+            if (TotalCount <= 0)
+            {
+                if (System.IO.File.Exists("count"))
+                {
+                    int _result;
+                    if (int.TryParse(System.IO.File.ReadAllText("count"), out _result) && _result > 0 && _result < 80)
+                    {
+                        TotalCount = _result;
+                    }
+                    else
+                    {
+                        TotalCount = 75;
+                    }
+                }
+                else
+                    TotalCount = 75;
+            }
+            RebuildSource();
+            _initialized = true;
+        }
+
         private void BTN_OK_Click(Object sender, RoutedEventArgs e)
         {
-            Result = GetRand();
-            if (Result > 75 || Result <= 0)
+            if (data.Count >= TotalCount)
+                return;
+            else
+                Result = GetRand();
+            if (Result > TotalCount || Result <= 0)
             {
                 MessageBox.Show("號碼錯誤");
                 return;
             }
             /*
-            while (data.Contains(result) && data.Count < 75)
+            while (data.Contains(result) && data.Count < TotalCount)
             {
                 result = GetRand();
             }
@@ -74,10 +111,10 @@ namespace BINGO
 
             ShowResult();
 
-            if (data.Count == 75)
+            if (data.Count == TotalCount)
             {
-                MessageBox.Show("遊戲結束", "結束", MessageBoxButton.OK, MessageBoxImage.Information);
-                ReStart();
+                if (MessageBox.Show("遊戲已結束，是否重新開始", "遊戲結束", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.No) == MessageBoxResult.Yes)
+                    ReStart();
             }
 
         }
@@ -92,9 +129,9 @@ namespace BINGO
             }
             int _result = data[data.Count - 1];
             label.Content = _result.ToString();
-            LB_Count.Content = data.Count.ToString();
+            LB_Count.Content = data.Count.ToString() + " / " + TotalCount.ToString();
 
-            TB_R.Text += (_result < 10 ? " " : "") + _result.ToString() + (data.Count == 75 ? "" : "  ") + (data.Count % 12 == 0 ? "\r\n" : "");
+            TB_R.Text += (_result < 10 ? " " : "") + _result.ToString() + (data.Count == TotalCount ? "" : "  ") + (data.Count % 12 == 0 ? "\r\n" : "");
 
             foreach (var x in sortdata)
             {
@@ -124,10 +161,10 @@ namespace BINGO
             {
                 return;
             }
-            LB_Count.Content = data.Count.ToString();
+            LB_Count.Content = data.Count.ToString() + " / " + TotalCount.ToString();
             foreach (var x in data)
             {
-                TB_R.Text += (x < 10 ? " " : "") + x.ToString() + (data.Count == 75 ? "" : "  ") + (data.Count % 12 == 0 ? "\r\n" : "");
+                TB_R.Text += (x < 10 ? " " : "") + x.ToString() + (data.Count == TotalCount ? "" : "  ") + (data.Count % 12 == 0 ? "\r\n" : "");
             }
 
             foreach (var x in sortdata)
@@ -179,35 +216,22 @@ namespace BINGO
             }
             return result;
         }
-
-        List<Label> LB_Result = new List<Label>();
-
-        List<int> data = new List<int>();
-        Dictionary<int, List<int>> sortdata = new Dictionary<int, List<int>>();
-        List<int> Source = new List<int>();
-        int Result;
-        Random rand = new Random();
-
-        private void Window_Loaded(Object sender, RoutedEventArgs e)
-        {
-            LB_Result = new List<Label>() { LB_0, LB_1, LB_2, LB_3, LB_4, LB_5, LB_6, LB_7 };
-            RebuildSource();
-            _initialized = true;
-        }
         
         private void BTN_ReStart_Click(Object sender, RoutedEventArgs e)
         {
-            if (data.Count < 75)
+            if (data.Count < TotalCount)
             {
                 if (MessageBox.Show("是否確定重新開始", "警告", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
                     ReStart();
             }
+            else
+                ReStart();
         }
         private void RebuildSource()
         {
             Source = new List<int>();
-            for (int i = 1; i < 76; i++)
-                Source.Add(i);
+            for (int i = 0; i < TotalCount; i++)
+                Source.Add(i + 1);
         }
 
         private void BTN_Mode_Click(Object sender, RoutedEventArgs e)
@@ -235,7 +259,6 @@ namespace BINGO
             }
         }
 
-        private bool _initialized;
         private void TB_INPUT_IsEnabledChanged(Object sender, DependencyPropertyChangedEventArgs e)
         {
             if (!_initialized)

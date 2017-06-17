@@ -18,7 +18,7 @@
 
         <Button x:Name="BTN_OK" Content="開始開獎" HorizontalAlignment="Left" Margin="712,837,0,0" VerticalAlignment="Top" Width="539" Click="BTN_OK_Click" Height="128" FontSize="64" BorderThickness="2" Background="#FFC9F1B2" BorderBrush="#FF2C6816"/>
         <Label x:Name="label" Content="" HorizontalAlignment="Left" Margin="804,450,0,0" VerticalAlignment="Top" FontSize="144" Width="360" HorizontalContentAlignment="Center" Height="320" VerticalContentAlignment="Center" FontWeight="Bold"/>
-        <Label x:Name="LB_Count" Content=" " HorizontalAlignment="Left" Margin="1201,373,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="37" Width="33" FontSize="16"/>
+        <Label x:Name="LB_Count" Content=" " HorizontalAlignment="Left" Margin="1151,373,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="37" Width="83" FontSize="16"/>
         <TextBlock x:Name="TB_R" HorizontalAlignment="Left" Margin="10,10,0,0" Text="開獎記錄" VerticalAlignment="Top" Width="1241" FontSize="48" FontWeight="Bold" Padding="5" FontFamily="Consolas"/>
         <Label x:Name="LB_0" Content=" " HorizontalAlignment="Left" Margin="10,432,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.042,-0.786" FontWeight="Bold" FontSize="32" Height="96" FontFamily="Consolas"/>
         <Label x:Name="LB_1" Content=" " HorizontalAlignment="Left" Margin="10,495,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.042,-0.786" FontWeight="Bold" FontSize="32" Height="96" FontFamily="Consolas"/>
